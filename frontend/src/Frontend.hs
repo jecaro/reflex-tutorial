@@ -36,7 +36,16 @@ frontend =
         el "h1" $ text "Welcome to Obelisk!"
 
         tutorial1
+        tutorial2
     }
 
 tutorial1 :: DomBuilder t m => m ()
 tutorial1 = el "div" $ text "Welcome to Reflex"
+
+tutorial2 :: DomBuilder t m => m ()
+tutorial2 = el "div" $ do
+  el "p" $ text "Reflex is:"
+  el "ul" $ do
+    el "li" $ text "Efficient"
+    el "li" $ text "Higher-order"
+    el "li" $ text "Glitch-free"
