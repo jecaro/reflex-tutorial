@@ -15,7 +15,11 @@
   }
 }:
 with obelisk;
-project ./. ({ ... }: {
+project ./. ({ pkgs, ... }: {
+  shellToolOverrides = self: super: {
+      haskell-language-server = pkgs.haskell.packages.ghc8107.haskell-language-server;
+      implicit-hie = pkgs.haskell.packages.ghc8107.implicit-hie;
+  };
   android.applicationId = "systems.obsidian.obelisk.examples.minimal";
   android.displayName = "Obelisk Minimal Example";
   ios.bundleIdentifier = "systems.obsidian.obelisk.examples.minimal";

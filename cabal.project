@@ -1,3 +1,7 @@
+packages:
+  frontend/*.cabal
+  backend/*.cabal
+  common/*.cabal
 optional-packages:
   *
 write-ghc-environment-files: never
