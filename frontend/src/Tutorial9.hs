@@ -1,7 +1,15 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Tutorial9 (tutorial9) where
+module Tutorial9
+  ( Button (..),
+    CalcState (..),
+    displayCalcState,
+    initCalcState,
+    tutorial9,
+    updateCalcState,
+  )
+where
 
 import Control.Monad.Fix
 import Data.Maybe

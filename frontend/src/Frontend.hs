@@ -11,6 +11,7 @@ import Obelisk.Generated.Static
 import Obelisk.Route
 import Reflex.Dom.Core
 import Tutorial1
+import Tutorial10
 import Tutorial2
 import Tutorial3
 import Tutorial4
@@ -61,4 +62,6 @@ frontend =
         tutorial8
         el "hr" blank
         tutorial9
+        el "hr" blank
+        tutorial10
     }
