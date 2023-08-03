@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Tutorial8 (tutorial8) where
+module Tutorial8 (numberPad, tutorial8) where
 
 import Control.Monad.Fix
 import Data.Text (Text, empty)

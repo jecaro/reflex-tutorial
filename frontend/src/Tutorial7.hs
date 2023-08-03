@@ -1,7 +1,7 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Tutorial7 (Op (..), tutorial7) where
+module Tutorial7 (Op (..), runOp, tutorial7) where
 
 import Control.Monad.Fix
 import Data.Map.Strict (Map)

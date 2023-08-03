@@ -18,6 +18,7 @@ import Tutorial5
 import Tutorial6
 import Tutorial7
 import Tutorial8
+import Tutorial9
 
 -- This runs in a monad that can be run on the client or the server.
 -- To run code in a pure client or pure server context, use one of the
@@ -58,4 +59,6 @@ frontend =
         tutorial7
         el "hr" blank
         tutorial8
+        el "hr" blank
+        tutorial9
     }
