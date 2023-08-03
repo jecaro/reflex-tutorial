@@ -38,6 +38,7 @@ frontend =
         tutorial1
         tutorial2
         tutorial3
+        tutorial4
     }
 
 tutorial1 :: DomBuilder t m => m ()
@@ -54,5 +55,16 @@ tutorial2 = el "div" $ do
 tutorial3 :: (DomBuilder t m, PostBuild t m) => m ()
 tutorial3 = el "div" $ do
   t <- inputElement def
+  text " "
+  dynText $ _inputElement_value t
+
+tutorial4 :: (DomBuilder t m, PostBuild t m) => m ()
+tutorial4 = el "div" $ do
+  t <-
+    inputElement $
+      def
+        & inputElementConfig_initialValue .~ "0"
+        & inputElementConfig_elementConfig . elementConfig_initialAttributes
+          .~ ("type" =: "number")
   text " "
   dynText $ _inputElement_value t
