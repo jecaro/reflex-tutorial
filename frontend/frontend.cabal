@@ -18,6 +18,17 @@ library
                , text
   exposed-modules:
     Frontend
+  other-modules: Tutorial1
+               , Tutorial2
+               , Tutorial3
+               , Tutorial4
+               , Tutorial5
+               , Tutorial6
+               , Tutorial7
+               , Tutorial8
+               , Tutorial9
+               , Tutorial10
+               , Tutorial11
   ghc-options: -Wall -O -fno-show-valid-hole-fits
                -- unsafe code
                -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields
