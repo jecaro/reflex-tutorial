@@ -6,10 +6,12 @@
 module Frontend where
 
 import Common.Route
+import Data.Text (pack, unpack)
 import Obelisk.Frontend
 import Obelisk.Generated.Static
 import Obelisk.Route
 import Reflex.Dom.Core
+import Text.Read
 
 -- This runs in a monad that can be run on the client or the server.
 -- To run code in a pure client or pure server context, use one of the
@@ -42,6 +44,8 @@ frontend =
         tutorial3
         el "hr" blank
         tutorial4
+        el "hr" blank
+        tutorial5
     }
 
 tutorial1 :: DomBuilder t m => m ()
@@ -71,3 +75,20 @@ tutorial4 = el "div" $ do
           .~ ("type" =: "number")
   text " "
   dynText $ _inputElement_value t
+
+tutorial5 :: (DomBuilder t m, PostBuild t m) => m ()
+tutorial5 = el "div" $ do
+  x <- numberInput
+  let numberString = fmap (pack . show) x
+  text " "
+  dynText numberString
+  where
+    numberInput :: DomBuilder t m => m (Dynamic t (Maybe Double))
+    numberInput = do
+      n <-
+        inputElement $
+          def
+            & inputElementConfig_initialValue .~ "0"
+            & inputElementConfig_elementConfig . elementConfig_initialAttributes
+              .~ ("type" =: "number")
+      return . fmap (readMaybe . unpack) $ _inputElement_value n
