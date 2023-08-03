@@ -37,6 +37,7 @@ frontend =
 
         tutorial1
         tutorial2
+        tutorial3
     }
 
 tutorial1 :: DomBuilder t m => m ()
@@ -49,3 +50,9 @@ tutorial2 = el "div" $ do
     el "li" $ text "Efficient"
     el "li" $ text "Higher-order"
     el "li" $ text "Glitch-free"
+
+tutorial3 :: (DomBuilder t m, PostBuild t m) => m ()
+tutorial3 = el "div" $ do
+  t <- inputElement def
+  text " "
+  dynText $ _inputElement_value t
