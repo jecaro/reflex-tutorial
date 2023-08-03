@@ -36,8 +36,11 @@ frontend =
         el "h1" $ text "Welcome to Obelisk!"
 
         tutorial1
+        el "hr" blank
         tutorial2
+        el "hr" blank
         tutorial3
+        el "hr" blank
         tutorial4
     }
 
