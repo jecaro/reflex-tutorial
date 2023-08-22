@@ -1,26 +1,29 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Frontend where
 
-import Common.Route
-import Obelisk.Frontend
-import Obelisk.Generated.Static
-import Obelisk.Route
+import Common.Route (FrontendRoute (..))
+import Home (home)
+import Obelisk.Frontend (Frontend (..))
+import Obelisk.Generated.Static (static)
+import Obelisk.Route (R)
+import Obelisk.Route.Frontend (subRoute_)
 import Reflex.Dom.Core
-import Tutorial1
-import Tutorial10
-import Tutorial11
-import Tutorial2
-import Tutorial3
-import Tutorial4
-import Tutorial5
-import Tutorial6
-import Tutorial7
-import Tutorial8
-import Tutorial9
+import Tutorial1 (tutorial1)
+import Tutorial10 (tutorial10)
+import Tutorial11 (tutorial11)
+import Tutorial2 (tutorial2)
+import Tutorial3 (tutorial3)
+import Tutorial4 (tutorial4)
+import Tutorial5 (tutorial5)
+import Tutorial6 (tutorial6)
+import Tutorial7 (tutorial7)
+import Tutorial8 (tutorial8)
+import Tutorial9 (tutorial9)
 
 -- This runs in a monad that can be run on the client or the server.
 -- To run code in a pure client or pure server context, use one of the
@@ -44,27 +47,17 @@ frontend =
           )
           blank,
       _frontend_body = do
-        el "h1" $ text "Welcome to Obelisk!"
-
-        tutorial1
-        el "hr" blank
-        tutorial2
-        el "hr" blank
-        tutorial3
-        el "hr" blank
-        tutorial4
-        el "hr" blank
-        tutorial5
-        el "hr" blank
-        tutorial6
-        el "hr" blank
-        tutorial7
-        el "hr" blank
-        tutorial8
-        el "hr" blank
-        tutorial9
-        el "hr" blank
-        tutorial10
-        el "hr" blank
-        tutorial11
+        subRoute_ $ \case
+          FrontendRoute_Tutorial1 -> tutorial1
+          FrontendRoute_Tutorial2 -> tutorial2
+          FrontendRoute_Tutorial3 -> tutorial3
+          FrontendRoute_Tutorial4 -> tutorial4
+          FrontendRoute_Tutorial5 -> tutorial5
+          FrontendRoute_Tutorial6 -> tutorial6
+          FrontendRoute_Tutorial7 -> tutorial7
+          FrontendRoute_Tutorial8 -> tutorial8
+          FrontendRoute_Tutorial9 -> tutorial9
+          FrontendRoute_Tutorial10 -> tutorial10
+          FrontendRoute_Tutorial11 -> tutorial11
+          FrontendRoute_Home -> home
     }

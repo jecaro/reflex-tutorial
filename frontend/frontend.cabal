@@ -15,10 +15,13 @@ library
                , obelisk-executable-config-lookup
                , obelisk-generated-static
                , lens
+               , some
                , text
+               , universe
   exposed-modules:
     Frontend
-  other-modules: Tutorial1
+  other-modules: Home
+               , Tutorial1
                , Tutorial2
                , Tutorial3
                , Tutorial4
