@@ -8,6 +8,7 @@ library
   build-depends: base
                , containers
                , common
+               , dependent-sum
                , obelisk-frontend
                , obelisk-route
                , jsaddle

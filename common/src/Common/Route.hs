@@ -16,13 +16,13 @@ module Common.Route
   ( BackendRoute (..),
     FrontendRoute (..),
     fullRouteEncoder,
+    routeLink',
     title,
     url,
   )
 where
 
 import Data.Functor.Identity (Identity)
-import Data.Some (Some (..))
 import Data.Text (Text)
 import qualified Data.Text as T
 import Obelisk.Route
@@ -35,7 +35,9 @@ import Obelisk.Route
     unitEncoder,
     pattern (:/),
   )
+import Obelisk.Route.Frontend (RouteToUrl, SetRoute, routeLink)
 import Obelisk.Route.TH (deriveRouteComponent)
+import Reflex.Dom.Core
 
 data BackendRoute :: * -> * where
   -- | Used to handle unparseable routes.
@@ -84,29 +86,26 @@ fullRouteEncoder =
     )
   where
     pathSegment route = PathSegment (segmentText route) $ unitEncoder mempty
-    segmentText route = T.map spaceToDash . T.toLower $ title' route
+    segmentText route = T.map spaceToDash . T.toLower $ title route
     spaceToDash ' ' = '-'
     spaceToDash c = c
 
-title' :: FrontendRoute a -> Text
-title' FrontendRoute_Home = "Home"
-title' FrontendRoute_Tutorial1 = "Tutorial 1"
-title' FrontendRoute_Tutorial2 = "Tutorial 2"
-title' FrontendRoute_Tutorial3 = "Tutorial 3"
-title' FrontendRoute_Tutorial4 = "Tutorial 4"
-title' FrontendRoute_Tutorial5 = "Tutorial 5"
-title' FrontendRoute_Tutorial6 = "Tutorial 6"
-title' FrontendRoute_Tutorial7 = "Tutorial 7"
-title' FrontendRoute_Tutorial8 = "Tutorial 8"
-title' FrontendRoute_Tutorial9 = "Tutorial 9"
-title' FrontendRoute_Tutorial10 = "Tutorial 10"
-title' FrontendRoute_Tutorial11 = "Tutorial 11"
+title :: FrontendRoute a -> Text
+title FrontendRoute_Home = "Home"
+title FrontendRoute_Tutorial1 = "Tutorial 1"
+title FrontendRoute_Tutorial2 = "Tutorial 2"
+title FrontendRoute_Tutorial3 = "Tutorial 3"
+title FrontendRoute_Tutorial4 = "Tutorial 4"
+title FrontendRoute_Tutorial5 = "Tutorial 5"
+title FrontendRoute_Tutorial6 = "Tutorial 6"
+title FrontendRoute_Tutorial7 = "Tutorial 7"
+title FrontendRoute_Tutorial8 = "Tutorial 8"
+title FrontendRoute_Tutorial9 = "Tutorial 9"
+title FrontendRoute_Tutorial10 = "Tutorial 10"
+title FrontendRoute_Tutorial11 = "Tutorial 11"
 
-title :: Some FrontendRoute -> Text
-title (Some route) = title' route
-
-url :: Some FrontendRoute -> R FrontendRoute
-url (Some route) =
+url :: FrontendRoute a -> R FrontendRoute
+url route =
   route :/ case route of
     FrontendRoute_Home -> ()
     FrontendRoute_Tutorial1 -> ()
@@ -120,6 +119,16 @@ url (Some route) =
     FrontendRoute_Tutorial9 -> ()
     FrontendRoute_Tutorial10 -> ()
     FrontendRoute_Tutorial11 -> ()
+
+routeLink' ::
+  ( RouteToUrl (R FrontendRoute) m,
+    SetRoute t (R FrontendRoute) m,
+    DomBuilder t m,
+    Prerender t m
+  ) =>
+  FrontendRoute a ->
+  m ()
+routeLink' route = routeLink (url route) . text $ title route
 
 concat
   <$> mapM

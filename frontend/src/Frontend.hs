@@ -1,4 +1,5 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -6,12 +7,13 @@
 
 module Frontend where
 
-import Common.Route (FrontendRoute (..))
+import Common.Route (FrontendRoute (..), routeLink')
+import Data.Dependent.Sum (DSum (..))
 import Home (home)
 import Obelisk.Frontend (Frontend (..))
 import Obelisk.Generated.Static (static)
 import Obelisk.Route (R)
-import Obelisk.Route.Frontend (subRoute_)
+import Obelisk.Route.Frontend (RouteToUrl, RoutedT, SetRoute, askRoute, subRoute_)
 import Reflex.Dom.Core
 import Tutorial1 (tutorial1)
 import Tutorial10 (tutorial10)
@@ -47,7 +49,9 @@ frontend =
           )
           blank,
       _frontend_body = do
+        homeLink
         subRoute_ $ \case
+          FrontendRoute_Home -> home
           FrontendRoute_Tutorial1 -> tutorial1
           FrontendRoute_Tutorial2 -> tutorial2
           FrontendRoute_Tutorial3 -> tutorial3
@@ -59,5 +63,19 @@ frontend =
           FrontendRoute_Tutorial9 -> tutorial9
           FrontendRoute_Tutorial10 -> tutorial10
           FrontendRoute_Tutorial11 -> tutorial11
-          FrontendRoute_Home -> home
     }
+
+homeLink ::
+  ( DomBuilder t m,
+    PostBuild t m,
+    Prerender t m,
+    RouteToUrl (R FrontendRoute) m,
+    SetRoute t (R FrontendRoute) m
+  ) =>
+  RoutedT t (R FrontendRoute) m ()
+homeLink = dyn_ . fmap (unlessOnHome routeLinkHome) =<< askRoute
+  where
+    unlessOnHome :: DomBuilder t m => m () -> R FrontendRoute -> m ()
+    unlessOnHome _ (FrontendRoute_Home :=> _) = blank
+    unlessOnHome a _ = a
+    routeLinkHome = routeLink' FrontendRoute_Home

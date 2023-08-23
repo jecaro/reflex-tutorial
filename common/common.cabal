@@ -9,6 +9,7 @@ library
                , dependent-sum
                , mtl
                , obelisk-route
+               , reflex-dom-core
                , text
   exposed-modules:
     Common.Api
