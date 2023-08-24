@@ -15,6 +15,7 @@ import Obelisk.Generated.Static (static)
 import Obelisk.Route (R)
 import Obelisk.Route.Frontend (RouteToUrl, RoutedT, SetRoute, askRoute, subRoute_)
 import Reflex.Dom.Core
+import TicTacToe (ticTacToe)
 import Tutorial1 (tutorial1)
 import Tutorial10 (tutorial10)
 import Tutorial11 (tutorial11)
@@ -63,6 +64,7 @@ frontend =
           FrontendRoute_Tutorial9 -> tutorial9
           FrontendRoute_Tutorial10 -> tutorial10
           FrontendRoute_Tutorial11 -> tutorial11
+          FrontendRoute_TicTacToe -> ticTacToe
     }
 
 homeLink ::

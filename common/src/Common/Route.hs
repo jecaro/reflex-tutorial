@@ -59,6 +59,7 @@ data FrontendRoute :: * -> * where
   FrontendRoute_Tutorial9 :: FrontendRoute ()
   FrontendRoute_Tutorial10 :: FrontendRoute ()
   FrontendRoute_Tutorial11 :: FrontendRoute ()
+  FrontendRoute_TicTacToe :: FrontendRoute ()
 
 -- This type is used to define frontend routes, i.e. ones for which the backend will serve the frontend.
 
@@ -83,6 +84,7 @@ fullRouteEncoder =
         FrontendRoute_Tutorial9 -> pathSegment FrontendRoute_Tutorial9
         FrontendRoute_Tutorial10 -> pathSegment FrontendRoute_Tutorial10
         FrontendRoute_Tutorial11 -> pathSegment FrontendRoute_Tutorial11
+        FrontendRoute_TicTacToe -> pathSegment FrontendRoute_TicTacToe
     )
   where
     pathSegment route = PathSegment (segmentText route) $ unitEncoder mempty
@@ -103,6 +105,7 @@ title FrontendRoute_Tutorial8 = "Tutorial 8"
 title FrontendRoute_Tutorial9 = "Tutorial 9"
 title FrontendRoute_Tutorial10 = "Tutorial 10"
 title FrontendRoute_Tutorial11 = "Tutorial 11"
+title FrontendRoute_TicTacToe = "Tic Tac Toe"
 
 url :: FrontendRoute a -> R FrontendRoute
 url route =
@@ -119,6 +122,7 @@ url route =
     FrontendRoute_Tutorial9 -> ()
     FrontendRoute_Tutorial10 -> ()
     FrontendRoute_Tutorial11 -> ()
+    FrontendRoute_TicTacToe -> ()
 
 routeLink' ::
   ( RouteToUrl (R FrontendRoute) m,

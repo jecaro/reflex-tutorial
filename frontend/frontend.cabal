@@ -22,6 +22,7 @@ library
   exposed-modules:
     Frontend
   other-modules: Home
+               , TicTacToe
                , Tutorial1
                , Tutorial2
                , Tutorial3
