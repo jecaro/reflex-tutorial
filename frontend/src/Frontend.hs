@@ -10,6 +10,8 @@ module Frontend where
 import Common.Route (FrontendRoute (..), routeLink')
 import Data.Dependent.Sum (DSum (..))
 import Home (home)
+import Javascript (javascript)
+import LocalStorage (localStorage)
 import Obelisk.Frontend (Frontend (..))
 import Obelisk.Generated.Static (static)
 import Obelisk.Route (R)
@@ -65,6 +67,8 @@ frontend =
           FrontendRoute_Tutorial10 -> tutorial10
           FrontendRoute_Tutorial11 -> tutorial11
           FrontendRoute_TicTacToe -> ticTacToe
+          FrontendRoute_LocalStorage -> localStorage
+          FrontendRoute_Javascript -> javascript
     }
 
 homeLink ::

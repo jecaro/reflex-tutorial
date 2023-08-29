@@ -22,8 +22,12 @@ library
   exposed-modules:
     Frontend
   other-modules: Home
+               , Javascript
+               , LocalStorage
                , TicTacToe
                , Tutorial1
+               , Tutorial10
+               , Tutorial11
                , Tutorial2
                , Tutorial3
                , Tutorial4
@@ -32,8 +36,6 @@ library
                , Tutorial7
                , Tutorial8
                , Tutorial9
-               , Tutorial10
-               , Tutorial11
   ghc-options: -Wall -O -fno-show-valid-hole-fits
                -- unsafe code
                -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields
