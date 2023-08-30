@@ -45,34 +45,35 @@ tutorial11 = divClass "calculator" $ do
             "div"
             ("class" =: "row-span-5 grid grid-cols-1 gap-x-4 gap-y-4")
             $ do
-              let opState = _calcState_op <$> calcState
               bPlus <- opButton Plus "+" opState
               bMinus <- opButton Minus "-" opState
               bTimes <- opButton Times "*" opState
               bDivide <- opButton Divide "/" opState
-              let opButtons = leftmost [bPlus, bMinus, bTimes, bDivide]
+              let opButtons = [bPlus, bMinus, bTimes, bDivide]
               bEq <- button' "="
               pure (opButtons, bEq)
 
-          bClear <- elAttr
+          (bClear, bPlusMinus, bModulo) <- elAttr
             "div"
             ("class" =: "row-start-1 col-span-3 grid grid-cols-3 gap-x-4 gap-y-4")
             $ do
               bClear <- button' "C"
-              _ <- button' "+/-"
-              _ <- button' "%"
-              pure bClear
+              bPlusMinus <- ("+/-" <$) <$> button' "+/-"
+              bModulo <- opButton Modulo "%" opState
+              pure (bClear, bPlusMinus, bModulo)
 
           let buttons' =
                 leftmost
                   [ ButtonNumber <$> numberButtons,
                     ButtonNumber <$> bPeriod,
-                    ButtonOp <$> opButtons,
+                    ButtonNumber <$> bPlusMinus,
+                    ButtonOp <$> leftmost (bModulo : opButtons),
                     ButtonEq <$ bEq,
                     ButtonClear <$ bClear
                   ]
           pure buttons'
       calcState <- accumDyn updateCalcState initCalcState buttons
+      let opState = _calcState_op <$> calcState
   pure ()
   where
     opButton :: Op -> Text -> Dynamic t (Maybe Op) -> m (Event t Op)

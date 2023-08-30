@@ -4,6 +4,7 @@
 module Tutorial7 (Op (..), runOp, tutorial7) where
 
 import Control.Monad.Fix (MonadFix)
+import Data.Fixed (mod')
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import Data.Text (Text, pack, unpack)
@@ -11,14 +12,15 @@ import Reflex.Dom.Core
 import Text.Read (readMaybe)
 import Utils (inputClasses, oneColumnClasses)
 
-data Op = Plus | Minus | Times | Divide
+data Op = Plus | Minus | Times | Divide | Modulo
   deriving stock (Eq, Ord, Show)
 
-runOp :: Fractional a => Op -> a -> a -> a
+runOp :: Op -> Double -> Double -> Double
 runOp Plus = (+)
 runOp Minus = (-)
 runOp Times = (*)
 runOp Divide = (/)
+runOp Modulo = mod'
 
 ops :: Map Op Text
 ops = Map.fromList [(Plus, "+"), (Minus, "-"), (Times, "*"), (Divide, "/")]

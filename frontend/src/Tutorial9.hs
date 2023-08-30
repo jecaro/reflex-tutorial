@@ -1,5 +1,6 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PatternGuards #-}
 
 module Tutorial9
   ( Button (..),
@@ -12,7 +13,7 @@ module Tutorial9
 where
 
 import Control.Monad.Fix (MonadFix)
-import Data.Maybe (isJust)
+import Data.Maybe (isNothing)
 import Data.Text (Text)
 import qualified Data.Text as T
 import Reflex.Dom.Core
@@ -40,10 +41,11 @@ initCalcState = CalcState 0 Nothing ""
 updateCalcState :: CalcState -> Button -> CalcState
 updateCalcState state@(CalcState acc mOp input) btn =
   case btn of
-    ButtonNumber d ->
-      if d == "." && isJust (T.find (== '.') input)
-        then state
-        else CalcState acc mOp (input <> d)
+    ButtonNumber "." | isNothing (T.find (== '.') input) -> CalcState acc mOp (input <> ".")
+    ButtonNumber "." | otherwise -> state
+    ButtonNumber "+/-" | Just ('-', input') <- T.uncons input -> CalcState acc mOp input'
+    ButtonNumber "+/-" | otherwise -> CalcState acc mOp (T.cons '-' input)
+    ButtonNumber d -> CalcState acc mOp (input <> d)
     ButtonOp pushedOp -> applyOp state (Just pushedOp)
     ButtonEq -> applyOp state Nothing
     ButtonClear -> initCalcState
