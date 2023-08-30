@@ -28,9 +28,10 @@ tutorial7 = elAttr "div" ("class" =: oneColumnClasses) $ do
   nx <- numberInput
   op <-
     _dropdown_value
-      <$> ( dropdown Times (constDyn ops) $
-              def & attributes .~ constDyn ("class" =: inputClasses)
-          )
+      <$> dropdown
+        Times
+        (constDyn ops)
+        (def & attributes .~ constDyn ("class" =: inputClasses))
   ny <- numberInput
   let values = zipDynWith (,) nx ny
       result = zipDynWith (\o (x, y) -> runOp o <$> x <*> y) op values

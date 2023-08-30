@@ -31,25 +31,15 @@ location :: Text
 location = "some-location"
 
 save :: ToJSVal a => Text -> a -> JSM ()
-save key val =
-  void $
-    jsg "window"
-      ^. js "localStorage"
-      ^. js2 "setItem" key val
+save key val = void $ jsg "window" ^. js "localStorage" . js2 "setItem" key val
 
 load :: FromJSVal a => Text -> JSM (Maybe a)
 load key =
   maybeNullOrUndefined' fromJSValUnchecked
-    =<< jsg "window"
-    ^. js "localStorage"
-    ^. js1 "getItem" key
+    =<< jsg "window" ^. js "localStorage" . js1 "getItem" key
 
 clear :: Text -> JSM ()
-clear key =
-  void $
-    jsg "window"
-      ^. js "localStorage"
-      ^. js1 "removeItem" key
+clear key = void $ jsg "window" ^. js "localStorage" . js1 "removeItem" key
 
 localStorage ::
   ( DomBuilder t m,
@@ -95,4 +85,4 @@ localStorage =
       . fmap (liftJSM . const (clear location))
       $ clearButton
 
-    el "div" $ dynText =<< fmap (T.pack . show) <$> holdDyn Nothing loadedValue
+    el "div" $ dynText . fmap (T.pack . show) =<< holdDyn Nothing loadedValue

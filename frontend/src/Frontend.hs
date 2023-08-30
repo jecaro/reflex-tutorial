@@ -76,7 +76,9 @@ frontend =
             FrontendRoute_TicTacToe -> ticTacToe
             FrontendRoute_LocalStorage -> localStorage
             FrontendRoute_Javascript -> javascript
-        elAttr "div" ("class" =: "absolute bottom-8 right-8") $
+        elAttr
+          "div"
+          ("class" =: "absolute bottom-8 right-8")
           homeLink
     }
 

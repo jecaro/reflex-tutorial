@@ -97,7 +97,7 @@ ticTacToe =
             ev31 <- dynButton 6 dynState
             ev32 <- dynButton 7 dynState
             ev33 <- dynButton 8 dynState
-            pure $ [ev11, ev12, ev13, ev21, ev22, ev23, ev31, ev32, ev33]
+            pure [ev11, ev12, ev13, ev21, ev22, ev23, ev31, ev32, ev33]
         resetEvent <- (Reset <$) <$> button' "Reset"
         el "div" . dynText $ message <$> dynState
         dynState <- foldDyn next init $ leftmost (resetEvent : boardEvents)
