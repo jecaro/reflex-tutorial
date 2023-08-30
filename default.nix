@@ -20,6 +20,7 @@ project ./. ({ pkgs, ... }: {
     haskell-language-server = pkgs.haskell.packages.ghc865.haskell-language-server;
     implicit-hie = pkgs.haskell.packages.ghc865.implicit-hie;
   };
+  staticFiles = import ./static { inherit pkgs; };
   android.applicationId = "systems.obsidian.obelisk.examples.minimal";
   android.displayName = "Obelisk Minimal Example";
   ios.bundleIdentifier = "systems.obsidian.obelisk.examples.minimal";

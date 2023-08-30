@@ -3,12 +3,13 @@
 
 module Tutorial7 (Op (..), runOp, tutorial7) where
 
-import Control.Monad.Fix
+import Control.Monad.Fix (MonadFix)
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import Data.Text (Text, pack, unpack)
 import Reflex.Dom.Core
-import Text.Read
+import Text.Read (readMaybe)
+import Utils (inputClasses, oneColumnClasses)
 
 data Op = Plus | Minus | Times | Divide
   deriving stock (Eq, Ord, Show)
@@ -23,15 +24,18 @@ ops :: Map Op Text
 ops = Map.fromList [(Plus, "+"), (Minus, "-"), (Times, "*"), (Divide, "/")]
 
 tutorial7 :: (DomBuilder t m, PostBuild t m, MonadHold t m, MonadFix m) => m ()
-tutorial7 = el "div" $ do
+tutorial7 = elAttr "div" ("class" =: oneColumnClasses) $ do
   nx <- numberInput
-  op <- _dropdown_value <$> dropdown Times (constDyn ops) def
+  op <-
+    _dropdown_value
+      <$> ( dropdown Times (constDyn ops) $
+              def & attributes .~ constDyn ("class" =: inputClasses)
+          )
   ny <- numberInput
   let values = zipDynWith (,) nx ny
       result = zipDynWith (\o (x, y) -> runOp o <$> x <*> y) op values
       resultText = fmap (pack . show) result
-  text " = "
-  dynText resultText
+  el "div" $ text " = " >> dynText resultText
   where
     numberInput :: DomBuilder t m => m (Dynamic t (Maybe Double))
     numberInput = do
@@ -39,6 +43,6 @@ tutorial7 = el "div" $ do
         inputElement $
           def
             & inputElementConfig_initialValue .~ "0"
-            & inputElementConfig_elementConfig . elementConfig_initialAttributes
-              .~ ("type" =: "number")
-      return . fmap (readMaybe . unpack) $ _inputElement_value n
+            & initialAttributes
+              .~ ("type" =: "number" <> "class" =: inputClasses)
+      pure . fmap (readMaybe . unpack) $ _inputElement_value n

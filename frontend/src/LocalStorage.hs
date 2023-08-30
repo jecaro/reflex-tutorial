@@ -23,6 +23,7 @@ import Language.Javascript.JSaddle
     maybeNullOrUndefined',
   )
 import Reflex.Dom.Core
+import Utils (button', inputClasses, oneColumnClasses)
 
 default (Text)
 
@@ -60,10 +61,12 @@ localStorage ::
   ) =>
   m ()
 localStorage =
-  el "div" $ do
+  elAttr "div" ("class" =: oneColumnClasses) $ do
     -- create an input element and return a behavior
-    inputText <- current . value <$> inputElement def
-    saveButton <- button "save"
+    inputText <-
+      current . value
+        <$> inputElement (def & initialAttributes .~ ("class" =: inputClasses))
+    saveButton <- button' "save"
 
     prerender_ (pure ())
       . performEvent_
@@ -73,7 +76,7 @@ localStorage =
       -- the input
       $ tag inputText saveButton
 
-    loadButton <- button "load"
+    loadButton <- button' "load"
     loadedValue :: Event t (Maybe Text) <-
       -- fire the javascript event when the load button is clicked by converting
       -- that Dynamic Event to the final Event
@@ -86,10 +89,10 @@ localStorage =
         . fmap (liftJSM . const (load location))
         $ loadButton
 
-    clearButton <- button "clear"
+    clearButton <- button' "clear"
     prerender_ (pure ())
       . performEvent_
       . fmap (liftJSM . const (clear location))
       $ clearButton
 
-    dynText =<< fmap (T.pack . show) <$> holdDyn Nothing loadedValue
+    el "div" $ dynText =<< fmap (T.pack . show) <$> holdDyn Nothing loadedValue

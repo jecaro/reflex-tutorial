@@ -36,6 +36,7 @@ library
                , Tutorial7
                , Tutorial8
                , Tutorial9
+               , Utils
   ghc-options: -Wall -O -fno-show-valid-hole-fits
                -- unsafe code
                -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields

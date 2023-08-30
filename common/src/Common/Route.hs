@@ -16,7 +16,6 @@ module Common.Route
   ( BackendRoute (..),
     FrontendRoute (..),
     fullRouteEncoder,
-    routeLink',
     title,
     url,
   )
@@ -35,9 +34,7 @@ import Obelisk.Route
     unitEncoder,
     pattern (:/),
   )
-import Obelisk.Route.Frontend (RouteToUrl, SetRoute, routeLink)
 import Obelisk.Route.TH (deriveRouteComponent)
-import Reflex.Dom.Core
 
 data BackendRoute :: * -> * where
   -- | Used to handle unparseable routes.
@@ -131,16 +128,6 @@ url route =
     FrontendRoute_TicTacToe -> ()
     FrontendRoute_Javascript -> ()
     FrontendRoute_LocalStorage -> ()
-
-routeLink' ::
-  ( RouteToUrl (R FrontendRoute) m,
-    SetRoute t (R FrontendRoute) m,
-    DomBuilder t m,
-    Prerender t m
-  ) =>
-  FrontendRoute a ->
-  m ()
-routeLink' route = routeLink (url route) . text $ title route
 
 concat
   <$> mapM

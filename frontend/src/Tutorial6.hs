@@ -4,17 +4,17 @@ module Tutorial6 (tutorial6) where
 
 import Data.Text (pack, unpack)
 import Reflex.Dom.Core
-import Text.Read
+import Text.Read (readMaybe)
+import Utils (inputClasses, oneColumnClasses)
 
 tutorial6 :: (DomBuilder t m, PostBuild t m) => m ()
-tutorial6 = el "div" $ do
+tutorial6 = elAttr "div" ("class" =: oneColumnClasses) $ do
   nx <- numberInput
-  text " + "
+  el "div" $ text " + "
   ny <- numberInput
-  text " = "
   let result = zipDynWith (\x y -> (+) <$> x <*> y) nx ny
       resultString = fmap (pack . show) result
-  dynText resultString
+  el "div" $ text " = " >> dynText resultString
   where
     numberInput :: DomBuilder t m => m (Dynamic t (Maybe Double))
     numberInput = do
@@ -22,6 +22,6 @@ tutorial6 = el "div" $ do
         inputElement $
           def
             & inputElementConfig_initialValue .~ "0"
-            & inputElementConfig_elementConfig . elementConfig_initialAttributes
-              .~ ("type" =: "number")
-      return . fmap (readMaybe . unpack) $ _inputElement_value n
+            & initialAttributes
+              .~ ("type" =: "number" <> "class" =: inputClasses)
+      pure . fmap (readMaybe . unpack) $ _inputElement_value n

@@ -10,7 +10,7 @@ import Language.Javascript.JSaddle (js, js1, jsg, liftJSM)
 import Reflex.Dom.Core
 
 javascript :: (DomBuilder t m, Prerender t0 m, Prerender t m) => m ()
-javascript = do
+javascript =
   el "div" $ do
     text "Example of using a javascript library in the static assets"
 

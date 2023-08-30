@@ -11,14 +11,15 @@ module Tutorial9
   )
 where
 
-import Control.Monad.Fix
-import Data.Maybe
+import Control.Monad.Fix (MonadFix)
+import Data.Maybe (isJust)
 import Data.Text (Text)
 import qualified Data.Text as T
 import Reflex.Dom.Core
-import Text.Read
+import Text.Read (readMaybe)
 import Tutorial7 (Op (..), runOp)
 import Tutorial8 (numberPad)
+import Utils (button', oneColumnClasses)
 
 data CalcState = CalcState
   { _calcState_acc :: Double, -- accumulator
@@ -64,16 +65,16 @@ displayCalcState (CalcState acc _op input) =
     else input
 
 tutorial9 :: (DomBuilder t m, MonadHold t m, MonadFix m, PostBuild t m) => m ()
-tutorial9 = el "div" $ do
+tutorial9 = elAttr "div" ("class" =: oneColumnClasses) $ do
   numberButtons <- numberPad
-  bPeriod <- ("." <$) <$> button "."
-  bPlus <- (Plus <$) <$> button "+"
-  bMinus <- (Minus <$) <$> button "-"
-  bTimes <- (Times <$) <$> button "*"
-  bDivide <- (Divide <$) <$> button "/"
+  bPeriod <- ("." <$) <$> button' "."
+  bPlus <- (Plus <$) <$> button' "+"
+  bMinus <- (Minus <$) <$> button' "-"
+  bTimes <- (Times <$) <$> button' "*"
+  bDivide <- (Divide <$) <$> button' "/"
   let opButtons = leftmost [bPlus, bMinus, bTimes, bDivide]
-  bEq <- button "="
-  bClear <- button "C"
+  bEq <- button' "="
+  bClear <- button' "C"
   let buttons =
         leftmost
           [ ButtonNumber <$> numberButtons,
@@ -83,5 +84,4 @@ tutorial9 = el "div" $ do
             ButtonClear <$ bClear
           ]
   calcState <- accumDyn updateCalcState initCalcState buttons
-  text " "
-  dynText (displayCalcState <$> calcState)
+  el "div" $ dynText (displayCalcState <$> calcState)
