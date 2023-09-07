@@ -6,22 +6,13 @@
 
 module LocalStorage (localStorage) where
 
-import Control.Lens ((^.))
-import Control.Monad (void)
 import Data.Text (Text)
 import qualified Data.Text as T
-import Language.Javascript.JSaddle
-  ( FromJSVal,
-    JSM,
-    ToJSVal,
-    fromJSValUnchecked,
-    js,
-    js1,
-    js2,
-    jsg,
-    liftJSM,
-    maybeNullOrUndefined',
-  )
+import JSDOM (currentWindowUnchecked)
+import JSDOM.Generated.Storage (getItem, removeItem, setItem)
+import JSDOM.Generated.Window (getLocalStorage)
+import JSDOM.Types (FromJSString, Storage, ToJSString)
+import Language.Javascript.JSaddle (JSM, liftJSM)
 import Reflex.Dom.Core
 import Utils (button', inputClasses, oneColumnClasses)
 
@@ -30,16 +21,17 @@ default (Text)
 location :: Text
 location = "some-location"
 
-save :: ToJSVal a => Text -> a -> JSM ()
-save key val = void $ jsg "window" ^. js "localStorage" . js2 "setItem" key val
+getLocalStorage' :: JSM Storage
+getLocalStorage' = currentWindowUnchecked >>= getLocalStorage
 
-load :: FromJSVal a => Text -> JSM (Maybe a)
-load key =
-  maybeNullOrUndefined' fromJSValUnchecked
-    =<< jsg "window" ^. js "localStorage" . js1 "getItem" key
+save :: ToJSString a => Text -> a -> JSM ()
+save key val = getLocalStorage' >>= \ls -> setItem ls key val
+
+load :: FromJSString a => Text -> JSM (Maybe a)
+load key = getLocalStorage' >>= flip getItem key
 
 clear :: Text -> JSM ()
-clear key = void $ jsg "window" ^. js "localStorage" . js1 "removeItem" key
+clear key = getLocalStorage' >>= flip removeItem key
 
 localStorage ::
   ( DomBuilder t m,

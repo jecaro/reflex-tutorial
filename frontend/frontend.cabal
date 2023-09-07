@@ -12,6 +12,7 @@ library
                , obelisk-frontend
                , obelisk-route
                , jsaddle
+               , jsaddle-dom
                , reflex-dom-core
                , obelisk-executable-config-lookup
                , obelisk-generated-static

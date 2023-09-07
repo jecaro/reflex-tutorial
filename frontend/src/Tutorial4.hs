@@ -12,4 +12,4 @@ tutorial4 = elAttr "div" ("class" =: oneColumnClasses) $ do
       def
         & inputElementConfig_initialValue .~ "0"
         & initialAttributes .~ ("type" =: "number" <> "class" =: inputClasses)
-  el "div" $ dynText $ _inputElement_value t
+  el "div" . dynText $ _inputElement_value t
