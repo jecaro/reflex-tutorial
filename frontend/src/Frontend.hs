@@ -59,7 +59,7 @@ frontend =
           )
           blank,
       _frontend_body = do
-        elAttr "div" ("class" =: "relative mt-4 mb-4 mr-4 ml-4") $
+        elAttr "div" ("class" =: "mt-4 mb-4 mr-4 ml-4") $
           subRoute_ $ \case
             FrontendRoute_Home -> home
             FrontendRoute_Tutorial1 -> tutorial1
@@ -76,10 +76,6 @@ frontend =
             FrontendRoute_TicTacToe -> ticTacToe
             FrontendRoute_LocalStorage -> localStorage
             FrontendRoute_Javascript -> javascript
-        elAttr
-          "div"
-          ("class" =: "absolute bottom-8 right-8")
-          homeLink
     }
 
 homeLink ::
